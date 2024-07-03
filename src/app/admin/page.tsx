@@ -21,19 +21,17 @@ type DashbordCardProps = {
 }
 
 
- function DashbordCard({ title, subtitle, body }: DashbordCardProps) {
+function DashbordCard({ title, subtitle, body }: DashbordCardProps) {
 
     return <Card>
-        <CardHeader>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{subtitle}</CardDescription>
-
-        </CardHeader>
-
-        <CardContent>
-            <p>{body}</p>
-        </CardContent>
-    </Card>
+                <CardHeader>
+                    <CardTitle>{title}</CardTitle>
+                    <CardDescription>{subtitle}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p>{body}</p>
+                </CardContent>
+            </Card>
 
 
 }
