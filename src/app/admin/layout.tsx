@@ -1,6 +1,8 @@
 import  { Nav,NavLink } from "@/components/NavBar";
 
 
+//this will not save cache data for thse admin pages and always fetch data from server
+export const dynamic  = "force-dynamic";
 
 const AdminLayout = ({
     children,
