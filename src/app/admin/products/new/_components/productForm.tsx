@@ -22,8 +22,8 @@ export default function AddProductForm() {
 
                 <Input
                     type="number"
-                    name="name"
-                    id="name"
+                    name="priceInCents"
+                    id="priceInCents"
                     required
                     value={priceinCents}
                     onChange={e => setPriceInCents(Number(e.target.value) || 0)}
@@ -39,7 +39,7 @@ export default function AddProductForm() {
                 <Input name="description" id="description" required />
             </div>
             <div className="space-y-2">
-                <Label htmlFor="name" >File</Label>
+                <Label htmlFor="file" >File</Label>
                 <Input type="file" name="file" id="file" required />
             </div>
             <div className="space-y-2">
