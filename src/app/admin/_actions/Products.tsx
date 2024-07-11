@@ -17,7 +17,7 @@ const addSchema = z.object({
     image: imageSchema.refine(file => file.size > 0, "Required"),
   })
 
-export async function AddProduct(formData:FormData){
+export async function AddProduct(prevState:unknown,formData:FormData){
 
     
     const result = addSchema.safeParse(Object.fromEntries(formData.entries()))
