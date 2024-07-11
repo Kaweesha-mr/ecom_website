@@ -6,10 +6,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { formatCurrency } from "@/lib/formatter"
 import { useState } from "react"
+import { useFormStatus } from "react-dom"
 
 export default function AddProductForm() {
 
-    const [priceinCents, setPriceInCents] = useState <number> (0)
+    const [priceinCents, setPriceInCents] = useState<number>(0)
     return (
         <form action={AddProduct} className="space-y-8">
             <div className="space-y-2">
@@ -47,9 +48,22 @@ export default function AddProductForm() {
                 <Input type="file" name="image" id="image" required />
             </div>
 
-            
-            <Button type="submit">Save</Button>
+            <SubmitButton/>
+
+
+
         </form>
+
+    )
+}
+
+
+function SubmitButton() {
+
+    const { pending } = useFormStatus()
+    return (
+
+        <Button type="submit" disabled={pending}> {pending ? "Saving" : "Save"}</Button>
 
     )
 }
