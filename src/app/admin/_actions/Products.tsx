@@ -65,6 +65,54 @@ export async function AddProduct(prevState:unknown,formData:FormData){
 
 }
 
+const editSchema = addSchema.extend({
+  file: fileSchema.optional(),
+  image: imageSchema.optional(),
+
+})
+export async function UpdateProduct(id:string,prevState:unknown,formData:FormData){
+
+    
+    const result = editSchema.safeParse(Object.fromEntries(formData.entries()))
+
+    if (result.success === false) {
+      return result.error.formErrors.fieldErrors
+    }
+
+
+
+
+    const data = result.data
+
+    fs.mkdir("products",{recursive:true})
+    const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
+    
+    //this codeline will write the file to the server by createting a file and handling it with the binary data
+    await fs.writeFile(filePath,Buffer.from(await data.file.arrayBuffer()))
+
+    fs.mkdir("public/products",{recursive:true})
+    const imgPath = `/products/${crypto.randomUUID()}-${data.file.name}`
+    
+    //this codeline will write the file to the server by createting a file and handling it with the binary data
+    await fs.writeFile(`public${imgPath}`,Buffer.from(await data.file.arrayBuffer()))
+
+    await db.product.create({
+        data:{
+          isAvailableForPurchase:false,
+            name:data.name,
+            description:data.description,
+            priceInCents:data.priceInCents,
+            imagePath:imgPath,
+            filePath:filePath
+
+        }
+    })
+
+    
+    redirect("/admin")
+
+}
+
 //product avaibalbility toggle
 export async function toggleProductAvailability(
   id:string,

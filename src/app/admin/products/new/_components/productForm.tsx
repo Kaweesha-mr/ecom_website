@@ -5,19 +5,22 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { formatCurrency } from "@/lib/formatter"
+import { Product } from "@prisma/client"
+import Image from "next/image"
 import { useState } from "react"
 import { useFormState, useFormStatus } from "react-dom"
-
-export default function AddProductForm() {
+export default function AddProductForm({product}:{
+    product?: Product | null
+}) {
 
     const[error,action] = useFormState(AddProduct,{})
 
-    const [priceinCents, setPriceInCents] = useState<number>(0)
+    const [priceinCents, setPriceInCents] = useState<number | undefined >(product?.priceInCents)
     return (
         <form action={action} className="space-y-8">
             <div className="space-y-2">
                 <Label htmlFor="name" >Name</Label>
-                <Input type="text" name="name" id="name" required />
+                <Input type="text" name="name" id="name" required defaultValue={product?.name} />
 
                 {error.name && <div className="text-red-500">{error.name}</div>}
             </div>
@@ -42,17 +45,19 @@ export default function AddProductForm() {
             </div>
             <div className="space-y-2">
                 <Label htmlFor="description" >Description</Label>
-                <Input name="description" id="description" required />
+                <Input name="description" id="description" required defaultValue={product?.description} />
                 {error.description && <div className="text-red-500">{error.description}</div>}
             </div>
             <div className="space-y-2">
                 <Label htmlFor="file" >File</Label>
-                <Input type="file" name="file" id="file" required />
+                <Input type="file" name="file" id="file" required = {product === null} />
+                {product != null && <span className="text-muted-foreground">{product.filePath}</span>}
                 {error.file && <div className="text-red-500">{error.file}</div>}
             </div>
             <div className="space-y-2">
                 <Label htmlFor="image" >Image</Label>
-                <Input type="file" name="image" id="image" required />
+                <Input type="file" name="image" id="image" required = {product === null} />
+                {product != null && <Image width={"400"} height={"400"} src={product.imagePath} alt={product.name} />}
                 {error.image && <div className="text-red-500">{error.image}</div>}
             </div>
 
