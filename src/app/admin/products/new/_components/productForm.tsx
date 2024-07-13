@@ -9,13 +9,18 @@ import { Product } from "@prisma/client"
 import Image from "next/image"
 import { useState } from "react"
 import { useFormState, useFormStatus } from "react-dom"
-export default function AddProductForm({product}:{
+export default function AddProductForm({ product }: {
     product?: Product | null
 }) {
 
-    const[error,action] = useFormState(product === null? AddProduct:UpdateProduct.bind(null,product.id),{})
+    const [error, action] = useFormState(
+        product == null ? AddProduct : UpdateProduct.bind(null, product.id),
+        {}
+    )
+    const [priceInCents, setPriceInCents] = useState<number | undefined>(
+        product?.priceInCents
+    )
 
-    const [priceinCents, setPriceInCents] = useState<number | undefined >(product?.priceInCents)
     return (
         <form action={action} className="space-y-8">
             <div className="space-y-2">
@@ -33,14 +38,14 @@ export default function AddProductForm({product}:{
                     name="priceInCents"
                     id="priceInCents"
                     required
-                    value={priceinCents}
+                    value={priceInCents}
                     onChange={e => setPriceInCents(Number(e.target.value) || 0)}
                 />
                 {error.priceInCents && <div className="text-red-500">{error.priceInCents}</div>}
 
                 {/* this will live format the cents to dollors */}
                 <div className="text-muted-foreground">
-                    {formatCurrency((priceinCents || 0) / 100)}
+                    {formatCurrency((priceInCents || 0) / 100)}
                 </div>
             </div>
             <div className="space-y-2">
@@ -50,18 +55,18 @@ export default function AddProductForm({product}:{
             </div>
             <div className="space-y-2">
                 <Label htmlFor="file" >File</Label>
-                <Input type="file" name="file" id="file" required = {product === null} />
+                <Input type="file" name="file" id="file" required={product === null} />
                 {product != null && <span className="text-muted-foreground">{product.filePath}</span>}
                 {error.file && <div className="text-red-500">{error.file}</div>}
             </div>
             <div className="space-y-2">
                 <Label htmlFor="image" >Image</Label>
-                <Input type="file" name="image" id="image" required = {product === null} />
+                <Input type="file" name="image" id="image" required={product === null} />
                 {product != null && <Image width={"400"} height={"400"} src={product.imagePath} alt={product.name} />}
                 {error.image && <div className="text-red-500">{error.image}</div>}
             </div>
 
-            <SubmitButton/>
+            <SubmitButton />
 
 
 
