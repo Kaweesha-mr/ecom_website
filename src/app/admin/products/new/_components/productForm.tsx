@@ -1,6 +1,6 @@
 "use client"
 
-import { AddProduct } from "@/app/admin/_actions/Products"
+import { AddProduct, UpdateProduct } from "@/app/admin/_actions/Products"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,7 +13,7 @@ export default function AddProductForm({product}:{
     product?: Product | null
 }) {
 
-    const[error,action] = useFormState(AddProduct,{})
+    const[error,action] = useFormState(product === null? AddProduct:UpdateProduct.bind(null,product.id),{})
 
     const [priceinCents, setPriceInCents] = useState<number | undefined >(product?.priceInCents)
     return (
